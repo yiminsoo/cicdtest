@@ -9,16 +9,15 @@ pipeline {
     stage('docker build and push') {
       steps {
         sh '''
-        docker build -t 211.183.3.100:8443/echo-ip .
-        docker push 211.183.3.100:8443/echo-ip
+        docker pull yiminsoo/cicdtest:gold
         '''
       }
     }
     stage('deploy kubernetes') {
       steps {
         sh '''
-        kubectl create deployment pl-bulk-prod --image=211.183.3.100:8443/echo-ip
-        kubectl expose deployment pl-bulk-prod --type=LoadBalancer --port=80 --name=pl-bulk-prod-
+        kubectl create deployment myweb-gold --image=yiminsoo/cicdtest:gold
+        kubectl expose deployment myweb-gold --type=LoadBalancer --port=80 --name=myweb-gold
 
         '''
       }
