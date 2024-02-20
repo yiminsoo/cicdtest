@@ -10,7 +10,7 @@ pipeline {
       steps {
         sh '''
         docker build -t 211.183.3.100:8443/echo-ip .
-        dcoekr push 211.183.3.100:8443/echo-ip
+        docker push 211.183.3.100:8443/echo-ip
         '''
       }
     }
