@@ -17,7 +17,7 @@ pipeline {
       steps {
         sh '''
         ansible master -m command -a 'kubectl create deployment myweb-gold --image=yiminsoo/cicdtest:gold'
-        ansible master -m command -a 'kbectl expose deployment myweb-gold --type=LoadBalancer --port=80 --name=myweb-gold'
+        ansible master -m command -a 'kubectl expose deployment myweb-gold --type=LoadBalancer --port=80 --name=myweb-gold'
 
         '''
       }
