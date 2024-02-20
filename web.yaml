@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: jenkins-ctn
-          image: inntaek/cicdtest:green
+          image: yiminsoo/cicdtest:gold
           ports:
             - containerPort: 80
 ---
