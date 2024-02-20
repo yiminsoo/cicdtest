@@ -1,0 +1,44 @@
+---
+- name: Deploy and expose myweb4 application
+  hosts: master
+  tasks:
+    - name: Create Kubernetes Deployment
+      k8s:
+        state: present
+        definition:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: myweb4
+          spec:
+            replicas: 1
+            selector:
+              matchLabels:
+                app: myweb4
+            template:
+              metadata:
+                labels:
+                  app: myweb4
+              spec:
+                containers:
+                - name: myweb4
+                  image: yiminsoo/cicdtest:gold
+                  ports:
+                  - containerPort: 80
+
+    - name: Create Kubernetes Service
+      k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: myweb4
+          spec:
+            selector:
+              app: myweb4
+            ports:
+            - protocol: TCP
+              port: 80
+              targetPort: 80
+            type: LoadBalancer
