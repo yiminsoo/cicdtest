@@ -1,44 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkins-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web # "1"
+  #아래내용은 Pod에 대한 구성내용
+  template:
+    metadata:
+      name: jenkins-pod
+      labels:
+        app: web # 반드시 "1"과 동일해야한다.
+    spec:
+      containers:
+        - name: jenkins-ctn
+          image: inntaek/cicdtest:green
+          ports:
+            - containerPort: 80
 ---
-- name: Deploy and expose myweb4 application
-  hosts: master
-  tasks:
-    - name: Create Kubernetes Deployment
-      k8s:
-        state: present
-        definition:
-          apiVersion: apps/v1
-          kind: Deployment
-          metadata:
-            name: myweb4
-          spec:
-            replicas: 1
-            selector:
-              matchLabels:
-                app: myweb4
-            template:
-              metadata:
-                labels:
-                  app: myweb4
-              spec:
-                containers:
-                - name: myweb4
-                  image: yiminsoo/cicdtest:gold
-                  ports:
-                  - containerPort: 80
-
-    - name: Create Kubernetes Service
-      k8s:
-        state: present
-        definition:
-          apiVersion: v1
-          kind: Service
-          metadata:
-            name: myweb4
-          spec:
-            selector:
-              app: myweb4
-            ports:
-            - protocol: TCP
-              port: 80
-              targetPort: 80
-            type: LoadBalancer
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-jenkins-lb
+spec:
+  ports:
+  - name: jenkins
+    port: 80  # LB 와 연결할 포트
+    targetPort: 80
+ 
+  selector:
+    app: web
+  type: LoadBalancer
